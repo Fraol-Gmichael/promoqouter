@@ -7,6 +7,8 @@ public class ResponseCodes {
             ResponseCode.builder().code(404).internalCode("404-0").message("Not found").build();
     public static final ResponseCode ALREADY_EXISTS =
             ResponseCode.builder().code(409).internalCode("409-0").message("Already exists").build();
+    public static final ResponseCode CONFLICT =
+            ResponseCode.builder().code(409).internalCode("409-1").message("No stock available").build();
 
     private ResponseCodes() {
         // don't initialize me
