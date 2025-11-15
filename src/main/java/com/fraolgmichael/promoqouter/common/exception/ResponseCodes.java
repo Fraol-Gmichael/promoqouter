@@ -9,6 +9,8 @@ public class ResponseCodes {
             ResponseCode.builder().code(409).internalCode("409-0").message("Already exists").build();
     public static final ResponseCode CONFLICT =
             ResponseCode.builder().code(409).internalCode("409-1").message("No stock available").build();
+    public static final ResponseCode NOT_IMPLEMENTED =
+            ResponseCode.builder().code(501).internalCode("501-0").message("Not implemented for applied use-case").build();
 
     private ResponseCodes() {
         // don't initialize me
