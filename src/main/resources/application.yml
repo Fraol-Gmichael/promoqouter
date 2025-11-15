@@ -1,3 +1,6 @@
 spring:
   application:
     name: promoqouter
+  h2:
+    console:
+      enabled: true
