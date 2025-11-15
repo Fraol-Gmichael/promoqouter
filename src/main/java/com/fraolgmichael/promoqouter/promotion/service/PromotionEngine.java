@@ -1,6 +1,4 @@
-package com.fraolgmichael.promoqouter.promotion.service.impl;
-
-import com.fraolgmichael.promoqouter.promotion.service.Promotion;
+package com.fraolgmichael.promoqouter.promotion.service;
 
 public abstract class PromotionEngine {
     abstract Promotion.Type promotionType();
@@ -9,5 +7,5 @@ public abstract class PromotionEngine {
         return type == promotionType();
     }
 
-    abstract void validate(Promotion promotion);
+    public abstract void validate(Promotion promotion);
 }

@@ -9,6 +9,8 @@ import com.fraolgmichael.promoqouter.promotion.dataaccess.PromotionRepository;
 import com.fraolgmichael.promoqouter.promotion.dto.CreatePromotionRequestDto;
 import com.fraolgmichael.promoqouter.promotion.dto.UpdatePromotionRequestDto;
 import com.fraolgmichael.promoqouter.promotion.service.Promotion;
+import com.fraolgmichael.promoqouter.promotion.service.PromotionEngine;
+import com.fraolgmichael.promoqouter.promotion.service.PromotionEngineFactory;
 import com.fraolgmichael.promoqouter.promotion.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

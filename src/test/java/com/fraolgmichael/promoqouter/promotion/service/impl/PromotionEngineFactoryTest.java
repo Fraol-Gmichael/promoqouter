@@ -1,6 +1,8 @@
 package com.fraolgmichael.promoqouter.promotion.service.impl;
 
 import com.fraolgmichael.promoqouter.promotion.service.Promotion;
+import com.fraolgmichael.promoqouter.promotion.service.PromotionEngine;
+import com.fraolgmichael.promoqouter.promotion.service.PromotionEngineFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

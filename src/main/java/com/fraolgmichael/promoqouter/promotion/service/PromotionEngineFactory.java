@@ -1,6 +1,5 @@
-package com.fraolgmichael.promoqouter.promotion.service.impl;
+package com.fraolgmichael.promoqouter.promotion.service;
 
-import com.fraolgmichael.promoqouter.promotion.service.Promotion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
