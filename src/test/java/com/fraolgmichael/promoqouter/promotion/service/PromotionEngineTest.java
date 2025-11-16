@@ -3,12 +3,17 @@ package com.fraolgmichael.promoqouter.promotion.service;
 import com.fraolgmichael.promoqouter.common.exception.ResponseCodes;
 import com.fraolgmichael.promoqouter.common.exception.ServiceException;
 import com.fraolgmichael.promoqouter.product.service.Category;
+import com.fraolgmichael.promoqouter.product.service.Product;
 import com.fraolgmichael.promoqouter.product.service.ProductService;
+import com.fraolgmichael.promoqouter.promotion.dto.Cart;
+import com.fraolgmichael.promoqouter.promotion.dto.CartRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -175,5 +180,126 @@ class PromotionEngineTest {
         public List<String> validateUseCaseSpecific(Promotion promotion) {
             return List.of();
         }
+    }
+
+    @Test
+    void apply_shouldReturnSameCart() {
+        Promotion promotion = mock(Promotion.class);
+        List<Product> products = List.of();
+        CartRequestDto cartRequestDto = mock(CartRequestDto.class);
+        Cart cart = mock(Cart.class);
+
+        Cart result = promotionEngine.apply(promotion, products, cartRequestDto, cart);
+
+        assertSame(cart, result);
+    }
+
+    @Test
+    void updateCartWithProductDiscount_shouldAddDiscountAndUpdateTotal() {
+        // GIVEN
+        Product product = mock(Product.class);
+        UUID productId = UUID.randomUUID();
+        when(product.getId()).thenReturn(productId);
+        when(product.getPrice()).thenReturn(new BigDecimal("100"));
+
+        CartRequestDto.CartItem cartItem = mock(CartRequestDto.CartItem.class);
+        when(cartItem.qty()).thenReturn(3L); // total price = 300
+
+        Cart.ProductDiscountInfo productDiscountInfo = Cart.ProductDiscountInfo.builder()
+                .product(product)
+                .cartItem(cartItem)
+                .discounts(new ArrayList<>())
+                .build();
+
+        Cart cart = Cart.builder().build();
+        cart.setProductDiscountInfos(new java.util.HashMap<>());
+        cart.getProductDiscountInfos().put(productId, productDiscountInfo);
+        cart.setTotalPrice(new BigDecimal("300"));
+
+        Promotion promotion = mock(Promotion.class);
+        when(promotion.getName()).thenReturn("Promo Name");
+        when(promotion.getDescription()).thenReturn("Promo Description");
+
+        BigDecimal discountedTotal = new BigDecimal("150");
+
+        // WHEN
+        promotionEngine.updateCartWithProductDiscount(
+                promotion,
+                cart,
+                discountedTotal,
+                productDiscountInfo
+        );
+
+        // THEN
+        assertEquals(1, productDiscountInfo.getDiscounts().size());
+        assertEquals(new BigDecimal("150"), productDiscountInfo.getDiscounts().getFirst().getAppliedDiscount());
+        assertEquals(new BigDecimal("150"), cart.getTotalPrice());
+    }
+
+    @Test
+    void getTargetProducts_whenCategoryTarget_shouldFilterCorrectly() {
+        Promotion promotion = mock(Promotion.class);
+        when(promotion.getTarget()).thenReturn(Promotion.Target.CATEGORY);
+        when(promotion.getTargetCategory()).thenReturn(Category.BEVERAGES);
+
+        Product p1 = mock(Product.class);
+        when(p1.getCategory()).thenReturn(Category.BEVERAGES);
+
+        Product p2 = mock(Product.class);
+        when(p2.getCategory()).thenReturn(Category.GROCERIES);
+
+        List<Product> result = promotionEngine.getTargetProducts(promotion, List.of(p1, p2));
+
+        assertEquals(1, result.size());
+        assertSame(p1, result.getFirst());
+    }
+
+
+    @Test
+    void getTargetProducts_whenProductTarget_shouldFilterCorrectly() {
+        Promotion promotion = mock(Promotion.class);
+        UUID targetId = UUID.randomUUID();
+
+        when(promotion.getTarget()).thenReturn(Promotion.Target.PRODUCT);
+        when(promotion.getTargetProductId()).thenReturn(targetId);
+
+        Product p1 = mock(Product.class);
+        Product p2 = mock(Product.class);
+
+        when(p1.getId()).thenReturn(targetId);
+        when(p2.getId()).thenReturn(UUID.randomUUID());
+
+        List<Product> result = promotionEngine.getTargetProducts(promotion, List.of(p1, p2));
+
+        assertEquals(1, result.size());
+        assertSame(p1, result.getFirst());
+    }
+
+    @Test
+    void getTargetProducts_whenNoMatch_shouldReturnEmptyList() {
+        Promotion promotion = mock(Promotion.class);
+        when(promotion.getTarget()).thenReturn(Promotion.Target.PRODUCT);
+        when(promotion.getTargetProductId()).thenReturn(UUID.randomUUID());
+
+        Product p = mock(Product.class);
+        when(p.getId()).thenReturn(UUID.randomUUID());
+
+        List<Product> result = promotionEngine.getTargetProducts(promotion, List.of(p));
+
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void getTargetProducts_whenTargetIsQty_shouldReturnEmptyList() {
+        Promotion promotion = mock(Promotion.class);
+        when(promotion.getTarget()).thenReturn(Promotion.Target.QTY);
+        when(promotion.getTargetProductId()).thenReturn(UUID.randomUUID());
+
+        Product p = mock(Product.class);
+        when(p.getId()).thenReturn(UUID.randomUUID());
+
+        List<Product> result = promotionEngine.getTargetProducts(promotion, List.of(p));
+
+        assertEquals(0, result.size());
     }
 }
