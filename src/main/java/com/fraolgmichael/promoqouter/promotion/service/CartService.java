@@ -1,11 +1,11 @@
 package com.fraolgmichael.promoqouter.promotion.service;
 
+import com.fraolgmichael.promoqouter.promotion.dto.Cart;
 import com.fraolgmichael.promoqouter.promotion.dto.CartRequestDto;
-import com.fraolgmichael.promoqouter.promotion.dto.CartResponseDto;
 import jakarta.validation.Valid;
 
 public interface CartService {
-    CartResponseDto quote(@Valid CartRequestDto cartRequestDto);
+    Cart quote(@Valid CartRequestDto cartRequestDto);
 
-    CartResponseDto confirm(@Valid CartRequestDto cartRequestDto);
+    Cart confirm(@Valid CartRequestDto cartRequestDto);
 }
