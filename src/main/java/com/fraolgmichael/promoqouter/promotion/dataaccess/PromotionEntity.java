@@ -58,14 +58,6 @@ public class PromotionEntity extends BaseEntity {
     @Builder.Default
     private CustomerSegment customerSegment = CustomerSegment.ALL;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "promotion_free_products",
-            joinColumns = @JoinColumn(name = "promotion_id")
-    )
-    @Column(name = "product_id")
-    private List<UUID> freeProductIds;
-
     private Integer buyXAmount;
     private Integer getYAmount;
 
@@ -73,15 +65,23 @@ public class PromotionEntity extends BaseEntity {
 
     @ElementCollection
     @CollectionTable(
-            name = "promotion_bundle_products",
+            name = "promotion_tiered_info",
             joinColumns = @JoinColumn(name = "promotion_id")
     )
-    @Column(name = "product_id")
-    private List<UUID> bundleProductIds;
-
-    private BigDecimal bundlePriceOverride;
+    private List<TieredInfo> tieredInfos;
 
     private String promoCode;
 
     private UUID linkedPromotionId;
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Embeddable
+    public static class TieredInfo {
+        private Integer fromValue;
+        private Integer toValue;
+        private BigDecimal discountPercent;
+    }
 }

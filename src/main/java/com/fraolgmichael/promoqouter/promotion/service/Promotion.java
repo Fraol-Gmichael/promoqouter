@@ -2,13 +2,11 @@ package com.fraolgmichael.promoqouter.promotion.service;
 
 import com.fraolgmichael.promoqouter.common.service.CustomerSegment;
 import com.fraolgmichael.promoqouter.product.service.Category;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -42,6 +40,7 @@ public class Promotion {
     private BigDecimal pointsToReward;
     private String promoCode;
     private UUID linkedPromotionId;
+    private List<TieredInfo> tieredInfos;
 
     public enum Type {
         FIXED_DISCOUNT,
@@ -61,4 +60,15 @@ public class Promotion {
         PRODUCT,
         CATEGORY,
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TieredInfo {
+        private Integer fromValue;
+        private Integer toValue;
+        private BigDecimal discountPercent;
+    }
+
 }

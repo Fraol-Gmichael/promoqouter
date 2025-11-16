@@ -32,14 +32,13 @@ public record CreatePromotionRequestDto(
         Category targetCategory,
         CustomerSegment customerSegment,
 
-        List<UUID> freeProductIds,
         @Positive(message = "buyXAmount must be positive number") Integer buyXAmount,
         @Positive(message = "getYAmount must be positive number") Integer getYAmount,
         @Positive(message = "pointsToReward must be positive number") BigDecimal pointsToReward,
-        List<UUID> bundleProductIds,
-        @Positive(message = "bundlePriceOverride must be positive number") BigDecimal bundlePriceOverride,
         String promoCode,
-        UUID linkedPromotionId
+        UUID linkedPromotionId,
+        List<Promotion.TieredInfo> tieredInfos
+
 ) {
 
     public CreatePromotionRequestDto {

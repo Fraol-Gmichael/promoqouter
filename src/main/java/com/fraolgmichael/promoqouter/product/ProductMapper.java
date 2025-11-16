@@ -11,7 +11,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-
     ProductEntity fromDtoToProductEntity(CreateProductRequestDto createProduct);
 
     Product fromEntityToProduct(ProductEntity productEntity);
