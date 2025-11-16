@@ -15,6 +15,7 @@ public record CartRequestDto(@NotEmpty(message = "at least one item is required"
                              CustomerSegment customerSegment,
                              List<@Valid @NotEmpty(message = "promoCode is required") String> promoCodes) {
 
+    @Builder(toBuilder = true)
     public record CartItem(
             @NotNull(message = "productId is required") UUID productId,
             @NotNull(message = "qty is required") @Positive(message = "qty must be positive number") Long qty
