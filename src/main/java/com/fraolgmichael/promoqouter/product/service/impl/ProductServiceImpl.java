@@ -51,6 +51,11 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.fromEntityToProduct(productEntity);
     }
 
+    @Override
+    public List<Product> getProducts(List<UUID> productIds) {
+        return productRepository.findByIdIn(productIds).stream().map(productMapper::fromEntityToProduct).toList();
+    }
+
     private ProductEntity getProductOrElseThrow(UUID id) {
         return productRepository.findById(id).orElseThrow(
                 () -> new ServiceException(ResponseCodes.NOT_FOUND, "Product with id " + id + " not found")

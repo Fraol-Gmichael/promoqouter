@@ -1,5 +1,6 @@
 package com.fraolgmichael.promoqouter.product.service.impl;
 
+import com.fraolgmichael.promoqouter.common.dataaccess.BaseEntity;
 import com.fraolgmichael.promoqouter.common.exception.ServiceException;
 import com.fraolgmichael.promoqouter.product.ProductMapper;
 import com.fraolgmichael.promoqouter.product.ProductMapperImpl;
@@ -135,5 +136,21 @@ class ProductServiceImplTest {
 
         assertEquals(2, result.size());
         verify(productRepository).findAll();
+    }
+
+    @Test
+    void shouldReturnProductsByIds() {
+        List<ProductEntity> entities = List.of(
+                ProductEntity.builder().id(UUID.randomUUID()).name("A").category(Category.BEVERAGES).build(),
+                ProductEntity.builder().id(UUID.randomUUID()).name("B").category(Category.ELECTRONICS).build()
+        );
+        List<UUID> ids = entities.stream().map(BaseEntity::getId).toList();
+
+        when(productRepository.findByIdIn(ids)).thenReturn(entities);
+
+        List<Product> result = productService.getProducts(ids);
+
+        assertEquals(2, result.size());
+        verify(productRepository).findByIdIn(ids);
     }
 }

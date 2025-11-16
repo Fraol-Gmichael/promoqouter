@@ -15,6 +15,8 @@ public interface ProductService {
 
     Product getProduct(@NotNull UUID id);
 
+    List<Product> getProducts(List<UUID> productIds);
+
     Long deleteProduct(@NotNull UUID id);
 
     List<Product> findAll();
