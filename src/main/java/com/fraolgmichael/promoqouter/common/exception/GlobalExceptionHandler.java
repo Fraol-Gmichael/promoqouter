@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     protected static String extractMessage(HttpMessageNotReadableException ex, Throwable rootCause) {
         if (rootCause instanceof InvalidFormatException) {
-            return "One or more fields have invalid data types. Please verify your request.";
+            return "One or more fields have invalid data types. Please verify your request (invalid data type getting passed).";
         }
         if (rootCause instanceof MismatchedInputException) {
             return "Malformed or missing input. Ensure the request body matches the expected structure.";
@@ -71,7 +71,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponse<?>> handle(ConstraintViolationException ex) {
-        traceAndLogExceptionOrigin(ex);
         return new ResponseEntity<>(ApiResponse.error(ResponseCodes.BAD_REQUEST,
                 Map.of("errorDetail", collectConstraintViolations(ex))), HttpStatus.BAD_REQUEST);
     }
