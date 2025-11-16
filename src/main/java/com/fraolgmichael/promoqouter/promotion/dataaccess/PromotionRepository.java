@@ -13,4 +13,6 @@ public interface PromotionRepository extends JpaRepository<PromotionEntity, UUID
     Long removeById(UUID id);
 
     List<PromotionEntity> findByNameIgnoreCase(String name);
+
+    Optional<PromotionEntity> findByPromoCodeIgnoreCase(String promoCode);
 }
