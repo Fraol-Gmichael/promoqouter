@@ -153,4 +153,20 @@ class ProductServiceImplTest {
         assertEquals(2, result.size());
         verify(productRepository).findByIdIn(ids);
     }
+
+    @Test
+    void shouldReturnProductsForUpdate() {
+        List<ProductEntity> entities = List.of(
+                ProductEntity.builder().id(UUID.randomUUID()).name("A").category(Category.BEVERAGES).build(),
+                ProductEntity.builder().id(UUID.randomUUID()).name("B").category(Category.ELECTRONICS).build()
+        );
+        List<UUID> ids = entities.stream().map(BaseEntity::getId).toList();
+
+        when(productRepository.findByIdInForUpdate(ids)).thenReturn(entities);
+
+        List<Product> result = productService.getProductsForUpdate(ids);
+
+        assertEquals(2, result.size());
+        verify(productRepository).findByIdInForUpdate(ids);
+    }
 }

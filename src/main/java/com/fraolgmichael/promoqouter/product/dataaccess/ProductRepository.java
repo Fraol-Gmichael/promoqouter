@@ -19,4 +19,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
     Optional<ProductEntity> findByIdForUpdate(UUID id);
 
     List<ProductEntity> findByIdIn(Collection<UUID> ids);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT p FROM ProductEntity p WHERE p.id IN :ids")
+    List<ProductEntity> findByIdInForUpdate(Collection<UUID> ids);
 }
