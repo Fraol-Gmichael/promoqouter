@@ -62,6 +62,7 @@ public class Promotion {
     public enum Target {
         PRODUCT,
         CATEGORY,
+        QTY,
     }
 
     @Getter

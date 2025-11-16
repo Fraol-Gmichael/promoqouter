@@ -39,7 +39,11 @@ public class PromotionEngineTieredBulkDiscountImpl extends PromotionEngine {
 
     @Override
     public List<String> validateTarget(Promotion promotion) {
-        return new ArrayList<>();
+        List<String> errors = new ArrayList<>();
+        if (promotion.getTarget() != Promotion.Target.QTY) {
+            errors.add("target must be QTY for promotion type " + promotionType());
+        }
+        return errors;
     }
 
     @Override

@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PromotionEngineTieredBulkDiscountImplTest {
 
@@ -42,8 +41,15 @@ class PromotionEngineTieredBulkDiscountImplTest {
     }
 
     @Test
-    void shouldBypassTargetValidation() {
+    void shouldOverrideTargetValidation_whenTargetIsNull() {
         Promotion promotion = new Promotion();
+        assertFalse(engine.validateTarget(promotion).isEmpty());
+    }
+
+    @Test
+    void shouldOverrideTargetValidation_whenTargetIsQty() {
+        Promotion promotion = new Promotion();
+        promotion.setTarget(Promotion.Target.QTY);
         assertTrue(engine.validateTarget(promotion).isEmpty());
     }
 
