@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +41,8 @@ public class Promotion {
     private BigDecimal pointsToReward;
     private String promoCode;
     private UUID linkedPromotionId;
-    private List<TieredInfo> tieredInfos;
+    @Builder.Default
+    private List<TieredInfo> tieredInfos = new ArrayList<>();
 
     public enum Type {
         FIXED_DISCOUNT,
@@ -49,6 +51,7 @@ public class Promotion {
         POINTS_REWARD,
         PERCENT_OFF,
         PROMO_CODE,
+        TIERED_BULK_DISCOUNT
     }
 
     public enum Status {
